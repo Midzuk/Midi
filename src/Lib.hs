@@ -6,9 +6,9 @@ import           Codec.Midi
 import Data.Ratio
 import Data.List
 
-track0 = [(0,  NoteOn 0 60 80),
+track0 = [(10,  NoteOn 0 60 80),
           (0,  NoteOn 0 64 60),
-          (1,  NoteOff 0 60 0),
+          (10,  NoteOff 0 60 0),
           (12, NoteOff 0 64 0),
           (0,  NoteOn 0 61 60),
           (12,  NoteOff 0 61 60),
