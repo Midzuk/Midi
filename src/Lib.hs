@@ -19,15 +19,21 @@ track1 = [(0,  NoteOn 0 65 80),
           (0,  TrackEnd)]
 
 myMidi = Midi { fileType = MultiTrack,
-                timeDiv  = TicksPerBeat 240,
+                timeDiv  = TicksPerBeat 20,
                 tracks   = [track0, track1] }
 
-data Sound = Sound Int
+type Length = Int                
+data Sound = Sound Key Velocity Length --要修正
 
 data Rhythm = Unit Sound | Rhythm Int Bool [Rhythm]
 -- True -> 直列
 -- False -> 並列
 
+convertRhythm :: Rhythm -> Track Int
+convertRhythm (Unit (Sound k v l)) =
+  [ (0, NoteOn 0 k v)
+  , (l, NoteOff 0 k 0)
+  ]
 {-
 --Rhythmの数値化
 convertRhythm :: Rhythm -> (Int, [(Ratio Int, Sound)])
