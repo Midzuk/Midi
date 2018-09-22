@@ -20,3 +20,9 @@ track1 = [(0,  NoteOn 0 65 80),
 myMidi = Midi { fileType = MultiTrack,
                 timeDiv  = TicksPerBeat 240,
                 tracks   = [track0, track1] }
+
+
+data Rhythm = Unit | Rhythm Bool [Rhythm]
+-- True -> 直列
+-- False -> 並列
+
