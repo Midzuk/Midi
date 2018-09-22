@@ -25,8 +25,14 @@ myMidi = Midi { fileType = MultiTrack,
                 timeDiv  = TicksPerBeat 20,
                 tracks   = [track2] }
 
-type Length = Int                
-data Sound = Sound Key Velocity Length --要修正
+type Length = Int
+
+--type Origin = Ratio Int
+--type Destination = Ratio Int
+--data Arrow = Arrow { org :: Origin, dest :: Destination }
+data Sound = Sound { key :: Key, vel :: Velocity }
+
+type Melody = [Sound]
 
 data Rhythm = Unit Sound | Rhythm Int Bool [Rhythm]
 -- True -> 直列
@@ -57,3 +63,16 @@ unionTrack ts =
     (ns, ms) = unzip . sortWith fst $ concat ts
   in
     zip (uncurry (-) <$> zip ns (0 : ns)) ms
+
+type Rest = Int --休符
+type Note = (Rest, Sound)
+
+noteToSound :: Note -> (Sound, Sound)
+noteToSound (r, s) = (Sound { key :: Key, vel :: Velocity, len :: Length })
+
+convertNotes :: [Note] -> Track Int
+convertNotes ns =
+  let
+    (rs, ss) = unzip . sortWith fst $ concat ns
+    drs = uncurry (-) <$> zip rs (0 : rs)
+  in
