@@ -5,6 +5,7 @@ module Lib
 import           Codec.Midi
 import Data.Ratio
 import Data.List
+import GHC.Exts
 
 track0 = [(10,  NoteOn 0 60 80),
           (0,  NoteOn 0 64 60),
@@ -18,9 +19,11 @@ track1 = [(0,  NoteOn 0 65 80),
           (24, NoteOn 0 65 0),
           (0,  TrackEnd)]
 
+track2 = unionTrack [track0, track1]
+
 myMidi = Midi { fileType = MultiTrack,
                 timeDiv  = TicksPerBeat 20,
-                tracks   = [track0, track1] }
+                tracks   = [track2] }
 
 type Length = Int                
 data Sound = Sound Key Velocity Length --要修正
@@ -47,3 +50,10 @@ convertRhythm (Rhythm n True rs) =
     f (n_, )
   (n, concat $ snd . convertRhythm <$> rs)
 -}
+
+unionTrack :: Real a => [Track a] -> Track a
+unionTrack ts =
+  let
+    (ns, ms) = unzip . sortWith fst $ concat ts
+  in
+    zip (uncurry (-) <$> zip ns (0 : ns)) ms
