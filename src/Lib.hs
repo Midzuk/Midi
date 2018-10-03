@@ -34,7 +34,7 @@ data Sound = Sound { key :: Key, vel :: Velocity }
 
 type Melody = [Sound]
 
-data Rhythm = Unit Sound | Rhythm Int Bool [Rhythm]
+data Rhythm = Unit Length | Rhythm Bool [Rhythm]
 -- True -> 直列
 -- False -> 並列
 
